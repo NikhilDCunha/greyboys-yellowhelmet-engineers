@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Number</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function getNumber() {
+            // Get the number from the URL
+            const params = new URLSearchParams(window.location.search);
+            const number = params.get("number");
+            
+            // Display the number
+            document.getElementById("output").innerText = "You entered: " + number;
+        }
+    </script>
+</head>
+<body onload="getNumber()">
+    <h2>Number Display Page</h2>
+    <p id="output"></p>
+    <a href="index.html">Go Back</a>
+</body>
+</html>

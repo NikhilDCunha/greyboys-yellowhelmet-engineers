@@ -1,0 +1,34 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  
+    <title>Number Input Display</title> 
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+    </style>
+    <script> // adds interactivity to the page
+        function displayNumber() 
+        {
+            // Get the input value
+            var number = document.getElementById("userNumber").value;
+            // Redirect to new page with the number as a query parameter
+            window.location.href = "display.html?number=" + encodeURIComponent(number);
+        }
+    </script>
+</head> 
+<body> 
+    <h2>Enter a Number</h2>  
+    <input type="number" id="userNumber" placeholder="Enter a number"> 
+    <button onclick="displayNumber()">Submit</button> 
+  
+</body>
+</html>
