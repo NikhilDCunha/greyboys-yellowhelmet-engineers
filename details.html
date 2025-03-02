@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        let users = [];
+        let selectedIndex;
+
+        function loadUserDetails() {
+            let gender = localStorage.getItem("selectedGender");
+            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
+            users = JSON.parse(localStorage.getItem(storageKey)) || [];
+            
+            selectedIndex = localStorage.getItem("selectedUserIndex");
+            if (selectedIndex !== null && users[selectedIndex]) {
+                document.getElementById("userName").value = users[selectedIndex].name;
+                document.getElementById("userAge").value = users[selectedIndex].age;
+            } else {
+                alert("User not found!");
+                window.location.href = "display.html"; // Redirect if no user found
+            }
+        }
+
+        function saveChanges() {
+            let newName = document.getElementById("userName").value;
+            let newAge = document.getElementById("userAge").value;
+
+            if (newName === "" || newAge === "") {
+                alert("Please enter both name and age.");
+                return;
+            }
+
+            users[selectedIndex] = { name: newName, age: newAge }; // Update user details
+            let gender = localStorage.getItem("selectedGender");
+            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
+            localStorage.setItem(storageKey, JSON.stringify(users)); // Save to storage
+
+            alert("Changes saved successfully!");
+            window.location.href = "display.html"; // Redirect back
+        }
+    </script>
+</head>
+<body onload="loadUserDetails()">
+    <div class="container">
+        <h2>Edit User Details</h2>
+        <input type="text" id="userName" placeholder="Enter Name"><br>
+        <input type="number" id="userAge" placeholder="Enter Age"><br>
+        <button onclick="saveChanges()">Save Changes</button>
+        <button onclick="window.location.href='display.html'">Cancel</button>
+    </div>
+</body>
+</html>
