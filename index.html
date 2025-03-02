@@ -1,10 +1,9 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  
-    <title>Number Input Display</title> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
     <style>
         body {
             display: flex;
@@ -14,21 +13,44 @@
             flex-direction: column;
             text-align: center;
         }
+        input, button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            width: 220px;
+        }
     </style>
-    <script> // adds interactivity to the page
-        function displayNumber() 
-        {
-            // Get the input value
-            var number = document.getElementById("userNumber").value;
-            // Redirect to new page with the number as a query parameter
-            window.location.href = "display.html?number=" + encodeURIComponent(number);
+    <script>
+        function addUser() {
+            let name = document.getElementById("name").value;
+            let age = document.getElementById("age").value;
+            let gender = localStorage.getItem("selectedGender"); // Get stored gender selection
+
+            if (!name || !age) {
+                alert("Please enter all details.");
+                return;
+            }
+            if (!gender) {
+                alert("Gender not selected! Please start from the gender selection page.");
+                window.location.href = "gender.html";
+                return;
+            }
+
+            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
+            let users = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+            users.push({ name, age });
+            localStorage.setItem(storageKey, JSON.stringify(users));
+
+            window.location.href = "display.html"; // Redirect to display page
         }
     </script>
-</head> 
-<body> 
-    <h2>Enter a Number</h2>  
-    <input type="number" id="userNumber" placeholder="Enter a number"> 
-    <button onclick="displayNumber()">Submit</button> 
-  
+</head>
+<body>
+    <h2>Add User</h2>
+    <input type="text" id="name" placeholder="Enter Name" autocomplete="off" required>
+    <input type="number" id="age" placeholder="Enter Age" autocomplete="off" required>
+    <button onclick="addUser()">Add</button>
+    <button onclick="window.location.href='display.html'">Cancel</button>
 </body>
 </html>
