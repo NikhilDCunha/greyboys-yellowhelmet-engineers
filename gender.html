@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Gender</title>
+    <title>Select the Plant</title>
     <style>
         body {
             display: flex;
@@ -22,15 +22,15 @@
         }
     </style>
     <script>
-        function selectGender(gender) {
-            localStorage.setItem("selectedGender", gender);
+        function selectPlant(plant) {
+            localStorage.setItem("selectedPlant", plant);
             window.location.href = "display.html";
         }
     </script>
 </head>
 <body>
-    <h2>Select Your Gender</h2>
-    <button onclick="selectGender('Male')">Male</button>
-    <button onclick="selectGender('Female')">Female</button>
+    <h2>Select the Plant</h2>
+    <button onclick="selectPlant('Plant1')">Plant1</button>
+    <button onclick="selectPlant('Plant2')">Plant2</button>
 </body>
 </html>
