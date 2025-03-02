@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add User</title>
+    <title>Add Motor Details</title>
     <style>
         body {
             display: flex;
@@ -21,37 +21,38 @@
         }
     </style>
     <script>
-        function addUser() {
+        function addMotor() {
             let name = document.getElementById("name").value;
-            let age = document.getElementById("age").value;
-            let gender = localStorage.getItem("selectedGender"); // Get stored gender selection
+            let kw = document.getElementById("kw").value;
+            let plant = localStorage.getItem("selectedPlant"); // Get stored plant selection
 
-            if (!name || !age) {
+            if (!name || !kw) {
                 alert("Please enter all details.");
                 return;
             }
-            if (!gender) {
-                alert("Gender not selected! Please start from the gender selection page.");
-                window.location.href = "gender.html";
+            if (!plant) {
+                alert("Plant not selected! Please start from the plant selection page.");
+                window.location.href = "select_plant.html";
                 return;
             }
 
-            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
-            let users = JSON.parse(localStorage.getItem(storageKey)) || [];
+            let storageKey = plant === "Plant1" ? "plant1Motors" : "plant2Motors";
+            let motors = JSON.parse(localStorage.getItem(storageKey)) || [];
 
-            users.push({ name, age });
-            localStorage.setItem(storageKey, JSON.stringify(users));
+            motors.push({ name, kw });
+            localStorage.setItem(storageKey, JSON.stringify(motors));
 
             window.location.href = "display.html"; // Redirect to display page
         }
     </script>
 </head>
 <body>
-    <h2>Add User</h2>
-    <input type="text" id="name" placeholder="Enter Name" autocomplete="off" required>
-    <input type="number" id="age" placeholder="Enter Age" autocomplete="off" required>
-    <button onclick="addUser()">Add</button>
+    <h2>Add Motor Details</h2>
+    <input type="text" id="name" placeholder="Enter Motor Name" autocomplete="off" required>
+    <input type="number" id="kw" placeholder="Enter KW" autocomplete="off" required>
+    <button onclick="addMotor()">Add</button>
     <button onclick="window.location.href='display.html'">Cancel</button>
 </body>
 </html>
+
 
