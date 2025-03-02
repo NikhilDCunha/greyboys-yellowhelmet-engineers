@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Details</title>
+    <title>Motor Details</title>
     <style>
         body {
             display: flex;
@@ -35,48 +35,50 @@
         }
     </style>
     <script>
-        let users = [];
-        let selectedIndex;
+        function loadMotorDetails() {
+            let plant = localStorage.getItem("selectedPlant");
+            let storageKey = plant === "Plant1" ? "plant1Motors" : "plant2Motors";
+            let motors = JSON.parse(localStorage.getItem(storageKey)) || [];
+            let selectedIndex = localStorage.getItem("selectedMotorIndex");
 
-        function loadUserDetails() {
-            let gender = localStorage.getItem("selectedGender");
-            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
-            users = JSON.parse(localStorage.getItem(storageKey)) || [];
-            
-            selectedIndex = localStorage.getItem("selectedUserIndex");
-            if (selectedIndex !== null && users[selectedIndex]) {
-                document.getElementById("userName").value = users[selectedIndex].name;
-                document.getElementById("userAge").value = users[selectedIndex].age;
+            console.log("Motors Array:", motors);
+            console.log("Selected Index:", selectedIndex);
+
+            if (selectedIndex !== null && motors[selectedIndex]) {
+                document.getElementById("motorName").value = motors[selectedIndex].name;
+                document.getElementById("motorRating").value = motors[selectedIndex].rating;
             } else {
-                alert("User not found!");
-                window.location.href = "display.html"; // Redirect if no user found
+                alert("Motor not found!");
+                window.location.href = "display.html";
             }
         }
 
         function saveChanges() {
-            let newName = document.getElementById("userName").value;
-            let newAge = document.getElementById("userAge").value;
+            let newName = document.getElementById("motorName").value;
+            let newRating = document.getElementById("motorRating").value;
+            let plant = localStorage.getItem("selectedPlant");
+            let storageKey = plant === "Plant1" ? "plant1Motors" : "plant2Motors";
+            let motors = JSON.parse(localStorage.getItem(storageKey)) || [];
+            let selectedIndex = localStorage.getItem("selectedMotorIndex");
 
-            if (newName === "" || newAge === "") {
-                alert("Please enter both name and age.");
+            if (newName === "" || newRating === "") {
+                alert("Please enter both motor name and rating.");
                 return;
             }
 
-            users[selectedIndex] = { name: newName, age: newAge }; // Update user details
-            let gender = localStorage.getItem("selectedGender");
-            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
-            localStorage.setItem(storageKey, JSON.stringify(users)); // Save to storage
+            motors[selectedIndex] = { name: newName, rating: newRating };
+            localStorage.setItem(storageKey, JSON.stringify(motors));
 
             alert("Changes saved successfully!");
-            window.location.href = "display.html"; // Redirect back
+            window.location.href = "display.html";
         }
     </script>
 </head>
-<body onload="loadUserDetails()">
+<body onload="loadMotorDetails()">
     <div class="container">
-        <h2>Edit User Details</h2>
-        <input type="text" id="userName" placeholder="Enter Name"><br>
-        <input type="number" id="userAge" placeholder="Enter Age"><br>
+        <h2>Edit Motor Details</h2>
+        <input type="text" id="motorName" placeholder="Enter motor name"><br>
+        <input type="number" id="motorRating" placeholder="Enter rating"><br>
         <button onclick="saveChanges()">Save Changes</button>
         <button onclick="window.location.href='display.html'">Cancel</button>
     </div>
