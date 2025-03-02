@@ -1,33 +1,116 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Number</title>
+    <title>Display Users</title>
     <style>
         body {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             flex-direction: column;
+            align-items: center;
             text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .top-buttons {
+            position: fixed;
+            top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .small-btn {
+    background-color: rgb(210, 209, 209);
+    color: rgb(245, 51, 51);
+    font-size: 12px;
+    padding: 3px 6px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+        .user-list {
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .search-container {
+            margin-top: 70px;
+            width: 80%;
+            max-width: 400px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
     </style>
     <script>
-        function getNumber() {
-            // Get the number from the URL
-            const params = new URLSearchParams(window.location.search);
-            const number = params.get("number");
-            
-            // Display the number
-            document.getElementById("output").innerText = "You entered: " + number;
+        let users = [];
+        function loadUsers() {
+            let gender = localStorage.getItem("selectedGender");
+            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
+            users = JSON.parse(localStorage.getItem(storageKey)) || [];
+            displayUsers(users);
+        }
+
+        function displayUsers(filteredUsers) {
+    let userList = document.getElementById("userList");
+    userList.innerHTML = "";
+    
+    filteredUsers.forEach((user, index) => {
+        let userItem = document.createElement("div");
+        userItem.innerHTML = `<button onclick="viewDetails(${index})">${user.name}</button>
+                              <button onclick="deleteUser(${index})" class="small-btn">❌</button>`; // Small delete button
+        userList.appendChild(userItem);
+    });
+}
+
+        function viewDetails(index) {
+            localStorage.setItem("selectedUserIndex", index);
+            window.location.href = "details.html";
+        }
+
+        function deleteUser(index) {
+            let gender = localStorage.getItem("selectedGender");
+            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
+            users.splice(index, 1);
+            localStorage.setItem(storageKey, JSON.stringify(users));
+            alert("User deleted successfully!");
+            loadUsers(); // Refresh the list
+        }
+
+        function searchUsers() {
+            let searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            let filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchTerm));
+            displayUsers(filteredUsers);
         }
     </script>
 </head>
-<body onload="getNumber()">
-    <h2>Number Display Page</h2>
-    <p id="output"></p>
-    <a href="index.html">Go Back</a>
+<body onload="loadUsers()">
+    <div class="top-buttons">
+        <button onclick="window.location.href='index.html'">Add New User</button>
+        <button onclick="window.location.href='gender.html'">Change Gender</button>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search User..." oninput="searchUsers()" autocomplete="off">
+    </div>
+
+    <h2>User List</h2>
+    <div class="user-list" id="userList"></div>
 </body>
 </html>
