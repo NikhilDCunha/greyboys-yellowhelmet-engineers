@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Users</title>
+    <title>Display Motors</title>
     <style>
         body {
             display: flex;
@@ -29,16 +29,15 @@
             cursor: pointer;
         }
         .small-btn {
-    background-color: rgb(210, 209, 209);
-    color: rgb(245, 51, 51);
-    font-size: 12px;
-    padding: 3px 6px;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-}
-
-        .user-list {
+            background-color: rgb(210, 209, 209);
+            color: rgb(245, 51, 51);
+            font-size: 12px;
+            padding: 3px 6px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .motor-list {
             margin-top: 80px;
             display: flex;
             flex-direction: column;
@@ -58,58 +57,60 @@
         }
     </style>
     <script>
-        let users = [];
-        function loadUsers() {
-            let gender = localStorage.getItem("selectedGender");
-            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
-            users = JSON.parse(localStorage.getItem(storageKey)) || [];
-            displayUsers(users);
+        let motors = [];
+        function loadMotors() {
+            let plant = localStorage.getItem("selectedPlant");
+            let storageKey = plant === "Plant1" ? "plant1Motors" : "plant2Motors";
+            motors = JSON.parse(localStorage.getItem(storageKey)) || [];
+            displayMotors(motors);
         }
 
-        function displayUsers(filteredUsers) {
-    let userList = document.getElementById("userList");
-    userList.innerHTML = "";
-    
-    filteredUsers.forEach((user, index) => {
-        let userItem = document.createElement("div");
-        userItem.innerHTML = `<button onclick="viewDetails(${index})">${user.name}</button>
-                              <button onclick="deleteUser(${index})" class="small-btn">❌</button>`; // Small delete button
-        userList.appendChild(userItem);
-    });
-}
+        function displayMotors(filteredMotors) {
+            let motorList = document.getElementById("motorList");
+            motorList.innerHTML = "";
+            
+            filteredMotors.forEach((motor, index) => {
+                let motorItem = document.createElement("div");
+                motorItem.innerHTML = `<button onclick="viewDetails(${index})">${motor.name}</button>
+                                      <button onclick="deleteMotor(${index})" class="small-btn">❌</button>`;
+                motorList.appendChild(motorItem);
+            });
+        }
 
         function viewDetails(index) {
-            localStorage.setItem("selectedUserIndex", index);
+            localStorage.setItem("selectedMotorIndex", index);
             window.location.href = "details.html";
         }
 
-        function deleteUser(index) {
-            let gender = localStorage.getItem("selectedGender");
-            let storageKey = gender === "Male" ? "maleUsers" : "femaleUsers";
-            users.splice(index, 1);
-            localStorage.setItem(storageKey, JSON.stringify(users));
-            alert("User deleted successfully!");
-            loadUsers(); // Refresh the list
+        function deleteMotor(index) {
+            let plant = localStorage.getItem("selectedPlant");
+            let storageKey = plant === "Plant1" ? "plant1Motors" : "plant2Motors";
+            motors.splice(index, 1);
+            localStorage.setItem(storageKey, JSON.stringify(motors));
+            alert("Motor deleted successfully!");
+            loadMotors();
         }
 
-        function searchUsers() {
+        function searchMotors() {
             let searchTerm = document.getElementById("searchInput").value.toLowerCase();
-            let filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchTerm));
-            displayUsers(filteredUsers);
+            let filteredMotors = motors.filter(motor => motor.name.toLowerCase().includes(searchTerm));
+            displayMotors(filteredMotors);
         }
     </script>
 </head>
-<body onload="loadUsers()">
+<body onload="loadMotors()">
     <div class="top-buttons">
-        <button onclick="window.location.href='index.html'">Add New User</button>
-        <button onclick="window.location.href='gender.html'">Change Gender</button>
+        <button onclick="window.location.href='index.html'">Add New Motor</button>
+        <button onclick="window.location.href='plant.html'">Change Plant</button>
+
     </div>
 
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search User..." oninput="searchUsers()" autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Search Motor..." oninput="searchMotors()" autocomplete="off">
     </div>
 
-    <h2>User List</h2>
-    <div class="user-list" id="userList"></div>
+    <h2>Motor List</h2>
+    <div class="motor-list" id="motorList"></div>
 </body>
 </html>
+
