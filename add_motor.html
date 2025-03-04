@@ -24,7 +24,7 @@
         function addMotor() {
             let name = document.getElementById("name").value;
             let kw = document.getElementById("kw").value;
-            let plant = localStorage.getItem("selectedPlant"); // Get stored plant selection
+            let plant = localStorage.getItem("selectedPlant");
 
             if (!name || !kw) {
                 alert("Please enter all details.");
@@ -32,7 +32,7 @@
             }
             if (!plant) {
                 alert("Plant not selected! Please start from the plant selection page.");
-                window.location.href = "select_plant.html";
+                window.location.href = "index.html";
                 return;
             }
 
@@ -42,7 +42,7 @@
             motors.push({ name, kw });
             localStorage.setItem(storageKey, JSON.stringify(motors));
 
-            window.location.href = "display.html"; // Redirect to display page
+            window.location.href = "display.html";
         }
     </script>
 </head>
