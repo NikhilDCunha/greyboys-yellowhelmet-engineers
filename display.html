@@ -41,6 +41,7 @@
             margin-top: 80px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 10px;
         }
         .search-container {
@@ -71,8 +72,8 @@
             
             filteredMotors.forEach((motor, index) => {
                 let motorItem = document.createElement("div");
-                motorItem.innerHTML = `<button onclick="viewDetails(${index})">${motor.name}</button>
-                                      <button onclick="deleteMotor(${index})" class="small-btn">❌</button>`;
+                motorItem.innerHTML = `<button onclick="viewDetails('${index}')">${motor.name}</button>
+                                      <button onclick="deleteMotor('${index}')" class="small-btn">❌</button>`;
                 motorList.appendChild(motorItem);
             });
         }
@@ -83,13 +84,22 @@
         }
 
         function deleteMotor(index) {
-            let plant = localStorage.getItem("selectedPlant");
-            let storageKey = plant === "Plant1" ? "plant1Motors" : "plant2Motors";
-            motors.splice(index, 1);
-            localStorage.setItem(storageKey, JSON.stringify(motors));
-            alert("Motor deleted successfully!");
-            loadMotors();
-        }
+    let confirmation = confirm("Are you sure you want to delete this motor?");
+    
+    if (confirmation) {
+        let plant = localStorage.getItem("selectedPlant");
+        let storageKey = plant === "Plant1" ? "plant1Motors" : "plant2Motors";
+        let motors = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+        // Remove the motor at the selected index
+        motors.splice(index, 1);
+        localStorage.setItem(storageKey, JSON.stringify(motors));
+
+        alert("Motor deleted successfully!");
+        location.reload(); // Refresh the page to update the list
+    }
+}
+
 
         function searchMotors() {
             let searchTerm = document.getElementById("searchInput").value.toLowerCase();
@@ -100,9 +110,8 @@
 </head>
 <body onload="loadMotors()">
     <div class="top-buttons">
-        <button onclick="window.location.href='index.html'">Add New Motor</button>
-        <button onclick="window.location.href='plant.html'">Change Plant</button>
-
+        <button onclick="window.location.href='add_motor.html'">Add New Motor</button>
+        <button onclick="window.location.href='index.html'">Change Plant</button>
     </div>
 
     <div class="search-container">
@@ -113,4 +122,3 @@
     <div class="motor-list" id="motorList"></div>
 </body>
 </html>
-
